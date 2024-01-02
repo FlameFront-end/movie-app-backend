@@ -14,7 +14,7 @@ async function bootstrap() {
 	const config = new DocumentBuilder()
 		.setTitle('Movie app')
 		.setVersion('1.0')
-		.build();
+		.build()
 	const document = SwaggerModule.createDocument(app, config)
 	SwaggerModule.setup('api', app, document)
 
