@@ -1,4 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import {
+	Column,
+	DeleteDateColumn,
+	Entity,
+	PrimaryGeneratedColumn
+} from 'typeorm'
 
 @Entity('movies')
 export class MovieEntity {
@@ -6,23 +11,8 @@ export class MovieEntity {
 	id: number
 
 	@Column()
-	title: string
+	w500image: string
 
-	@Column()
-	description: string
-
-	@Column()
-	originalImage: string
-
-	@Column()
-	w500lImage: string
-
-	@Column()
-	rating: string
-
-	@Column()
-	actors: string
-
-	@Column()
-	releaseDate: string
+	@DeleteDateColumn()
+	deleteAt?: Date
 }

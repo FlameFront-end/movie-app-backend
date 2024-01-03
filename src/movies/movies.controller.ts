@@ -3,8 +3,6 @@ import {
 	Post,
 	UseInterceptors,
 	UploadedFile,
-	ParseFilePipe,
-	MaxFileSizeValidator,
 	Get
 } from '@nestjs/common'
 import { MoviesService } from './movies.service'
@@ -40,14 +38,10 @@ export class MoviesController {
 			}
 		}
 	})
-	create(
-		@UploadedFile(
-			new ParseFilePipe({
-				validators: [new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 })]
-			})
-		)
-		file: Express.Multer.File
+	async create(
+		@UploadedFile()
+		w500image: Express.Multer.File
 	) {
-		return file
+		return await this.moviesService.create(w500image)
 	}
 }

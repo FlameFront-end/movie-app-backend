@@ -1,15 +1,27 @@
 {
   "version": 2,
+  "env": {
+    "DB_HOST": "berry.db.elephantsql.com",
+    "DB_USERNAME": "jjumjbde",
+    "DB_PASSWORD": "Xdemfl8n9NoxvSKYRG_7e_wZjcLb7X0D",
+    "DB_NAME": "jjumjbde",
+    "JWT_SECRET": "fgfdgdfgdfgg"
+  },
   "builds": [
     {
-      "src": "main.ts",
+      "src": "src/main.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "main.ts"
+      "dest": "src/main.ts",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
     }
   ]
 }
+
