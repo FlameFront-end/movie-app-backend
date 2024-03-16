@@ -11,7 +11,16 @@ export class MovieEntity {
 	id: number
 
 	@Column()
+	title: string
+
+	@Column()
+	description: string
+
+	@Column()
 	w500image: string
+
+	@Column()
+	actors: string
 
 	@DeleteDateColumn()
 	deleteAt?: Date
