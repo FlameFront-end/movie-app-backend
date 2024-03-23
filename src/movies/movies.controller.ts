@@ -10,7 +10,7 @@ import {
 import { MoviesService } from './movies.service'
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger'
 import { FileInterceptor } from '@nestjs/platform-express'
-import { fileStorage } from './storage'
+import { fileStorage } from '../storage'
 import { CreateMovieDto } from './dto/create-movie.dto'
 
 @Controller('movies')

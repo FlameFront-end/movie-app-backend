@@ -17,6 +17,12 @@ export class UserEntity {
 	@Column()
 	password: string
 
+	@Column()
+	nick: string
+
+	@Column()
+	ava: string
+
 	@CreateDateColumn()
 	createdAt: Date
 

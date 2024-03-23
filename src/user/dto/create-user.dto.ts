@@ -1,9 +1,15 @@
-import { IsEmail, MinLength } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger'
 
 export class CreateUserDto {
-  @IsEmail({}, { message: 'Invalid email' })
-  email: string
+	@ApiProperty()
+	readonly email: string
 
-  @MinLength(6, { message: 'Password must ne more then 6 symbols' })
-  password: string
+	@ApiProperty()
+	readonly password: string
+
+	@ApiProperty()
+	readonly nick: string
+
+	@ApiProperty()
+	readonly ava: Express.Multer.File
 }

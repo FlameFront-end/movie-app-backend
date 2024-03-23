@@ -27,12 +27,17 @@ export class UserService {
 
 		const user = this.userRepository.save({
 			email: createUserDto.email,
-			password: await argon2.hash(createUserDto.password)
+			password: await argon2.hash(createUserDto.password),
+			nick: createUserDto.nick,
+			ava: createUserDto.ava.filename
 		})
 
 		const token = this.jwtService.sign({ email: createUserDto.email })
 
-		return { user, token }
+		return {
+			...user,
+			token
+		}
 	}
 
 	async findOne(email: string) {
