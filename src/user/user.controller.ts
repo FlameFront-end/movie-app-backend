@@ -18,6 +18,7 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { avaStorage } from '../storage'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import * as argon2 from 'argon2'
+import { ResetPasswordDto } from './dto/reset-password.dto'
 
 @Controller('user')
 @ApiTags('user')
@@ -62,12 +63,11 @@ export class UserController {
 
 	@Patch('reset-password')
 	@UseGuards(JwtAuthGuard)
-	async resetPassword(@Request() req) {
-		console.log('req', req.user)
-		const { old_password, new_password } = req.body
+	async resetPassword(@Request() req, @Body() body: ResetPasswordDto) {
+		const { old_password, new_password } = body
 		const user = await this.userService.getUserByEmail(req.user.email)
 
-		const isOldPasswordValid = argon2.verify(user.password, old_password)
+		const isOldPasswordValid = await argon2.verify(user.password, old_password)
 
 		if (isOldPasswordValid) {
 			await this.userService.resetPassword(user, new_password)
