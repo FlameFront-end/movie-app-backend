@@ -5,6 +5,7 @@ import { UserEntity } from './entities/user.entity'
 import { Repository } from 'typeorm'
 import * as argon2 from 'argon2'
 import { JwtService } from '@nestjs/jwt'
+import { IUser } from '../types/types'
 
 @Injectable()
 export class UserService {
@@ -22,10 +23,10 @@ export class UserService {
 		})
 
 		if (existUser) {
-			throw new BadRequestException('This email already exist')
+			throw new BadRequestException('This email already exists')
 		}
 
-		const user = this.userRepository.save({
+		const user = await this.userRepository.save({
 			email: createUserDto.email,
 			password: await argon2.hash(createUserDto.password),
 			nick: createUserDto.nick,
@@ -42,5 +43,18 @@ export class UserService {
 
 	async findOne(email: string) {
 		return await this.userRepository.findOne({ where: { email: email } })
+	}
+
+	async getUserByEmail(email: string) {
+		return await this.findOne(email)
+	}
+
+	async updatePassword(userId: number, newPassword: string): Promise<void> {
+		await this.userRepository.update({ id: userId }, { password: newPassword })
+	}
+
+	async resetPassword(user: IUser, newPassword: string): Promise<void> {
+		const hashedNewPassword = await argon2.hash(newPassword)
+		await this.updatePassword(user.id, hashedNewPassword)
 	}
 }
