@@ -6,6 +6,7 @@ import { Repository } from 'typeorm'
 import * as argon2 from 'argon2'
 import { JwtService } from '@nestjs/jwt'
 import { IUser } from '../types/types'
+import { MovieEntity } from '../movies/entities/movie.entity'
 
 @Injectable()
 export class UserService {
@@ -56,5 +57,31 @@ export class UserService {
 	async resetPassword(user: IUser, newPassword: string): Promise<void> {
 		const hashedNewPassword = await argon2.hash(newPassword)
 		await this.updatePassword(user.id, hashedNewPassword)
+	}
+
+	async addToFavorites(userId: number, movie: MovieEntity): Promise<void> {
+		const user = await this.userRepository.findOne({ where: { id: userId } })
+		if (!user) {
+			throw new BadRequestException('User not found')
+		}
+
+		await this.userRepository
+			.createQueryBuilder()
+			.relation(UserEntity, 'favorites')
+			.of(user)
+			.add(movie)
+	}
+
+	async removeFromFavorites(userId: number, movieId: number): Promise<void> {
+		const user = await this.userRepository.findOne({ where: { id: userId } })
+		if (!user) {
+			throw new BadRequestException('User not found')
+		}
+
+		await this.userRepository
+			.createQueryBuilder()
+			.relation(UserEntity, 'favorites')
+			.of(user)
+			.remove(movieId)
 	}
 }

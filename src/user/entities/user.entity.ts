@@ -1,10 +1,13 @@
 import {
-	Column,
-	CreateDateColumn,
 	Entity,
 	PrimaryGeneratedColumn,
-	UpdateDateColumn
+	Column,
+	CreateDateColumn,
+	UpdateDateColumn,
+	JoinTable,
+	ManyToMany
 } from 'typeorm'
+import { MovieEntity } from '../../movies/entities/movie.entity'
 
 @Entity('user')
 export class UserEntity {
@@ -22,6 +25,10 @@ export class UserEntity {
 
 	@Column()
 	ava: string
+
+	@ManyToMany(() => MovieEntity)
+	@JoinTable()
+	favorites: MovieEntity[]
 
 	@CreateDateColumn()
 	createdAt: Date

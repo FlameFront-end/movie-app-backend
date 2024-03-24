@@ -5,9 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserEntity } from './entities/user.entity'
 import { JwtModule } from '@nestjs/jwt'
 import { ConfigModule, ConfigService } from '@nestjs/config'
+import { MoviesModule } from '../movies/movies.module'
 
 @Module({
 	imports: [
+		MoviesModule,
 		TypeOrmModule.forFeature([UserEntity]),
 		JwtModule.registerAsync({
 			imports: [ConfigModule],

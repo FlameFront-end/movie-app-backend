@@ -9,7 +9,9 @@ import {
 	Patch,
 	UseGuards,
 	Request,
-	UnauthorizedException
+	UnauthorizedException,
+	Param,
+	Delete
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -19,11 +21,16 @@ import { avaStorage } from '../storage'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import * as argon2 from 'argon2'
 import { ResetPasswordDto } from './dto/reset-password.dto'
+import { MoviesService } from '../movies/movies.service'
+import { MovieEntity } from '../movies/entities/movie.entity'
 
 @Controller('user')
 @ApiTags('user')
 export class UserController {
-	constructor(private readonly userService: UserService) {}
+	constructor(
+		private readonly userService: UserService,
+		private readonly moviesService: MoviesService
+	) {}
 
 	@Post()
 	@UseInterceptors(
@@ -75,5 +82,23 @@ export class UserController {
 		} else {
 			throw new UnauthorizedException('Old password is incorrect')
 		}
+	}
+
+	@Post('favorites/:movieId')
+	@UseGuards(JwtAuthGuard)
+	async addToFavorites(
+		@Request() req,
+		@Body() movie: MovieEntity
+	): Promise<void> {
+		await this.userService.addToFavorites(req.user.id, movie)
+	}
+
+	@Delete('favorites/:movieId')
+	@UseGuards(JwtAuthGuard)
+	async removeFromFavorites(
+		@Request() req,
+		@Param('movieId') movieId: number
+	): Promise<void> {
+		await this.userService.removeFromFavorites(req.user.id, movieId)
 	}
 }
