@@ -26,6 +26,9 @@ export class UserEntity {
 	@Column()
 	ava: string
 
+	@Column({ default: false })
+	isAdmin: boolean
+
 	@ManyToMany(() => MovieEntity)
 	@JoinTable()
 	favorites: MovieEntity[]
