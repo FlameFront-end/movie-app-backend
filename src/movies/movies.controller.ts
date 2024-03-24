@@ -2,17 +2,17 @@ import {
 	Controller,
 	Post,
 	UseInterceptors,
-	UploadedFile,
 	Get,
 	Body,
 	Param,
 	Put,
-	Delete
+	Delete,
+	UploadedFiles
 } from '@nestjs/common'
 import { MoviesService } from './movies.service'
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger'
-import { FileInterceptor } from '@nestjs/platform-express'
-import { moviesImage } from '../storage'
+import { FileFieldsInterceptor } from '@nestjs/platform-express'
+import { movieStorage } from '../storage'
 import { CreateMovieDto } from './dto/create-movie.dto'
 import { UpdateMovieDto } from './dto/update-movie.dto'
 
@@ -28,18 +28,50 @@ export class MoviesController {
 
 	@Post()
 	@UseInterceptors(
-		FileInterceptor('file', {
-			storage: moviesImage
-		})
+		FileFieldsInterceptor(
+			[
+				{ name: 'posterImage', maxCount: 1 },
+				{ name: 'mainImage', maxCount: 1 },
+				{ name: 'trailerVideo', maxCount: 1 },
+				{ name: 'mainVideo', maxCount: 1 }
+			],
+			{
+				storage: movieStorage
+			}
+		)
 	)
 	@ApiConsumes('multipart/form-data')
 	@ApiBody({
 		schema: {
 			type: 'object',
 			properties: {
-				file: {
-					type: 'string',
-					format: 'binary'
+				posterImage: {
+					type: 'array',
+					items: {
+						type: 'string',
+						format: 'binary'
+					}
+				},
+				mainImage: {
+					type: 'array',
+					items: {
+						type: 'string',
+						format: 'binary'
+					}
+				},
+				trailerVideo: {
+					type: 'array',
+					items: {
+						type: 'string',
+						format: 'binary'
+					}
+				},
+				mainVideo: {
+					type: 'array',
+					items: {
+						type: 'string',
+						format: 'binary'
+					}
 				},
 				title: {
 					type: 'string'
@@ -57,17 +89,24 @@ export class MoviesController {
 		}
 	})
 	async create(
-		@UploadedFile()
-		w500image: Express.Multer.File,
+		@UploadedFiles()
+		files: {
+			posterImage: Express.Multer.File[]
+			mainImage: Express.Multer.File[]
+			trailerVideo: Express.Multer.File[]
+			mainVideo: Express.Multer.File[]
+		},
 		@Body() createMovieDto: CreateMovieDto
 	) {
-		console.log('createMovieDto', createMovieDto)
+		const { posterImage, mainImage, trailerVideo, mainVideo } = files
 		return await this.moviesService.create({
 			...createMovieDto,
-			w500image: w500image.filename
+			posterImage: posterImage[0].filename,
+			mainImage: mainImage[0].filename,
+			trailerVideo: trailerVideo[0].filename,
+			mainVideo: mainVideo[0].filename
 		})
 	}
-
 	@Get(':id')
 	findOne(@Param('id') id: number) {
 		return this.moviesService.getMovieById(id)
@@ -75,18 +114,50 @@ export class MoviesController {
 
 	@Put(':id')
 	@UseInterceptors(
-		FileInterceptor('file', {
-			storage: moviesImage
-		})
+		FileFieldsInterceptor(
+			[
+				{ name: 'posterImage', maxCount: 1 },
+				{ name: 'mainImage', maxCount: 1 },
+				{ name: 'trailerVideo', maxCount: 1 },
+				{ name: 'mainVideo', maxCount: 1 }
+			],
+			{
+				storage: movieStorage
+			}
+		)
 	)
 	@ApiConsumes('multipart/form-data')
 	@ApiBody({
 		schema: {
 			type: 'object',
 			properties: {
-				file: {
-					type: 'string',
-					format: 'binary'
+				posterImage: {
+					type: 'array',
+					items: {
+						type: 'string',
+						format: 'binary'
+					}
+				},
+				mainImage: {
+					type: 'array',
+					items: {
+						type: 'string',
+						format: 'binary'
+					}
+				},
+				trailerVideo: {
+					type: 'array',
+					items: {
+						type: 'string',
+						format: 'binary'
+					}
+				},
+				mainVideo: {
+					type: 'array',
+					items: {
+						type: 'string',
+						format: 'binary'
+					}
 				},
 				title: {
 					type: 'string'
@@ -104,14 +175,24 @@ export class MoviesController {
 		}
 	})
 	async update(
-		@UploadedFile()
-		w500image: Express.Multer.File,
+		@UploadedFiles()
+		files: {
+			posterImage: Express.Multer.File[]
+			mainImage: Express.Multer.File[]
+			trailerVideo: Express.Multer.File[]
+			mainVideo: Express.Multer.File[]
+		},
 		@Param('id') id: number,
 		@Body() updateMovieDto: UpdateMovieDto
 	) {
+		const { posterImage, mainImage, trailerVideo, mainVideo } = files
+
 		return await this.moviesService.updateMovie(id, {
 			...updateMovieDto,
-			w500image: w500image.filename
+			posterImage: posterImage[0].filename,
+			mainImage: mainImage[0].filename,
+			trailerVideo: trailerVideo[0].filename,
+			mainVideo: mainVideo[0].filename
 		})
 	}
 

@@ -14,10 +14,7 @@ export class MoviesService {
 
 	async create(createMovieDto: CreateMovieDto) {
 		return this.repository.save({
-			title: createMovieDto.title,
-			description: createMovieDto.description,
-			w500image: createMovieDto.w500image,
-			actors: createMovieDto.actors
+			...createMovieDto
 		})
 	}
 

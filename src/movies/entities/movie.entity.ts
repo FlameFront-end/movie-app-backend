@@ -19,7 +19,16 @@ export class MovieEntity {
 	description: string
 
 	@Column()
-	w500image: string
+	posterImage: string
+
+	@Column()
+	mainImage: string
+
+	@Column()
+	trailerVideo: string
+
+	@Column()
+	mainVideo: string
 
 	@Column()
 	actors: string

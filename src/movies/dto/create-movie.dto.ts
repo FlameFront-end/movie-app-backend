@@ -8,7 +8,16 @@ export class CreateMovieDto {
 	readonly description: string
 
 	@ApiProperty()
-	readonly w500image: string
+	readonly posterImage: string
+
+	@ApiProperty()
+	readonly mainImage: string
+
+	@ApiProperty()
+	readonly trailerVideo: string
+
+	@ApiProperty()
+	readonly mainVideo: string
 
 	@ApiProperty()
 	readonly actors: string
