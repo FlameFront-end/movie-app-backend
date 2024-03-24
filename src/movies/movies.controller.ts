@@ -5,13 +5,16 @@ import {
 	UploadedFile,
 	Get,
 	Body,
-	Param
+	Param,
+	Put,
+	Delete
 } from '@nestjs/common'
 import { MoviesService } from './movies.service'
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { moviesImage } from '../storage'
 import { CreateMovieDto } from './dto/create-movie.dto'
+import { UpdateMovieDto } from './dto/update-movie.dto'
 
 @Controller('movies')
 @ApiTags('movies')
@@ -68,5 +71,18 @@ export class MoviesController {
 	@Get(':id')
 	findOne(@Param('id') id: number) {
 		return this.moviesService.getMovieById(id)
+	}
+
+	@Put(':id')
+	async update(
+		@Param('id') id: number,
+		@Body() updateMovieDto: UpdateMovieDto
+	) {
+		return await this.moviesService.updateMovie(id, updateMovieDto)
+	}
+
+	@Delete(':id')
+	async remove(@Param('id') id: number) {
+		return await this.moviesService.deleteMovie(id)
 	}
 }

@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 @Module({
 	controllers: [MoviesController],
 	providers: [MoviesService],
-	imports: [TypeOrmModule.forFeature([MovieEntity])]
+	imports: [TypeOrmModule.forFeature([MovieEntity])],
+	exports: [MoviesService]
 })
 export class MoviesModule {}

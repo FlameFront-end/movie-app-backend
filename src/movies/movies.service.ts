@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { MovieEntity } from './entities/movie.entity'
 import { FindOneOptions, Repository } from 'typeorm'
 import { CreateMovieDto } from './dto/create-movie.dto'
+import { UpdateMovieDto } from './dto/update-movie.dto'
 
 @Injectable()
 export class MoviesService {
@@ -33,6 +34,31 @@ export class MoviesService {
 		if (!movie) {
 			throw new NotFoundException('Фильм не был найден')
 		}
+		return movie
+	}
+
+	async updateMovie(
+		id: number,
+		updateMovieDto: UpdateMovieDto
+	): Promise<MovieEntity> {
+		const movie = await this.repository.findOne({ where: { id } })
+		if (!movie) {
+			throw new Error('Movie not found')
+		}
+		Object.assign(movie, updateMovieDto)
+
+		return await this.repository.save(movie)
+	}
+
+	async deleteMovie(id: number): Promise<MovieEntity> {
+		const movie = await this.repository.findOne({ where: { id } })
+
+		if (!movie) {
+			throw new Error('Movie not found')
+		}
+
+		await this.repository.delete(id)
+
 		return movie
 	}
 }
