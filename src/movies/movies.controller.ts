@@ -74,11 +74,45 @@ export class MoviesController {
 	}
 
 	@Put(':id')
+	@UseInterceptors(
+		FileInterceptor('file', {
+			storage: moviesImage
+		})
+	)
+	@ApiConsumes('multipart/form-data')
+	@ApiBody({
+		schema: {
+			type: 'object',
+			properties: {
+				file: {
+					type: 'string',
+					format: 'binary'
+				},
+				title: {
+					type: 'string'
+				},
+				description: {
+					type: 'string'
+				},
+				actors: {
+					type: 'array',
+					items: {
+						type: 'string'
+					}
+				}
+			}
+		}
+	})
 	async update(
+		@UploadedFile()
+		w500image: Express.Multer.File,
 		@Param('id') id: number,
 		@Body() updateMovieDto: UpdateMovieDto
 	) {
-		return await this.moviesService.updateMovie(id, updateMovieDto)
+		return await this.moviesService.updateMovie(id, {
+			...updateMovieDto,
+			w500image: w500image.filename
+		})
 	}
 
 	@Delete(':id')

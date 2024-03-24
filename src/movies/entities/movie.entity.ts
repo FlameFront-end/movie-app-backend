@@ -1,8 +1,10 @@
 import {
 	Column,
+	CreateDateColumn,
 	DeleteDateColumn,
 	Entity,
-	PrimaryGeneratedColumn
+	PrimaryGeneratedColumn,
+	UpdateDateColumn
 } from 'typeorm'
 
 @Entity('movies')
@@ -21,6 +23,12 @@ export class MovieEntity {
 
 	@Column()
 	actors: string
+
+	@CreateDateColumn()
+	createdAt: Date
+
+	@UpdateDateColumn()
+	updateAt: Date
 
 	@DeleteDateColumn()
 	deleteAt?: Date
