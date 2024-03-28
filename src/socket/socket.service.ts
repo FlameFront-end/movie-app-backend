@@ -20,8 +20,8 @@ export class SocketService implements OnGatewayConnection {
 		console.log('CONNECTED')
 	}
 
-	@SubscribeMessage('server-path')
+	@SubscribeMessage('message')
 	sendEvent(@MessageBody() message: any, @ConnectedSocket() client: any) {
-		this.server.emit('client-path', message)
+		this.server.emit('response', message)
 	}
 }

@@ -99,6 +99,7 @@ export class MoviesController {
 		@Body() createMovieDto: CreateMovieDto
 	) {
 		const { posterImage, mainImage, trailerVideo, mainVideo } = files
+
 		return await this.moviesService.create({
 			...createMovieDto,
 			posterImage: posterImage[0].filename,

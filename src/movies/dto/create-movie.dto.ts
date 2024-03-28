@@ -19,6 +19,6 @@ export class CreateMovieDto {
 	@ApiProperty()
 	readonly mainVideo: string
 
-	@ApiProperty()
-	readonly actors: string
+	@ApiProperty({ type: [String] }) // Specify type as array of strings
+	readonly actors: string[]
 }

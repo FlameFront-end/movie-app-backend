@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common'
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
 import { MoviesModule } from './movies/movies.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { MovieEntity } from './movies/entities/movie.entity'
@@ -8,6 +6,7 @@ import { AuthModule } from './auth/auth.module'
 import { UserEntity } from './user/entities/user.entity'
 import { UserModule } from './user/user.module'
 import { ConfigModule, ConfigService } from '@nestjs/config'
+import { SocketService } from './socket/socket.service'
 
 @Module({
 	imports: [
@@ -29,7 +28,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 			inject: [ConfigService]
 		})
 	],
-	controllers: [AppController],
-	providers: [AppService]
+	controllers: [],
+	providers: [SocketService]
 })
 export class AppModule {}
