@@ -35,7 +35,7 @@ export class ActorsController {
 					type: 'string',
 					format: 'binary'
 				},
-				full_name: {
+				fullName: {
 					type: 'string'
 				}
 			}
@@ -47,7 +47,10 @@ export class ActorsController {
 		ava: Express.Multer.File,
 		@Body() createActorDto: CreateActorDto
 	) {
-		return this.actorsService.create({ ...createActorDto, ava })
+		return this.actorsService.create({
+			...createActorDto,
+			ava: `http://localhost:4000/uploads/actors/${ava.filename}`
+		})
 	}
 
 	@Get()

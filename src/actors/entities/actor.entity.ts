@@ -11,12 +11,15 @@ export class ActorEntity {
 	@PrimaryGeneratedColumn()
 	id: number
 
+	@Column()
+	fullName: string
+
+	@Column()
+	ava: string
+
 	@CreateDateColumn()
 	createdAt: Date
 
 	@UpdateDateColumn()
 	updatedAt: Date
-
-	@Column()
-	full_name: string
 }

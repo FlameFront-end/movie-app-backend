@@ -2,8 +2,8 @@ import { ApiProperty } from '@nestjs/swagger'
 
 export class CreateActorDto {
 	@ApiProperty()
-	readonly full_name: string
+	readonly fullName: string
 
 	@ApiProperty()
-	readonly ava: Express.Multer.File
+	readonly ava: string
 }

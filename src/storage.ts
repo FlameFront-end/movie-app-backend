@@ -23,6 +23,6 @@ export const avaStorage = diskStorage({
 })
 
 export const actorStorage = diskStorage({
-	destination: './uploads/actor',
+	destination: './uploads/actors',
 	filename: normalizeFileName
 })
