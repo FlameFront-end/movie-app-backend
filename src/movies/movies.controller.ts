@@ -102,10 +102,10 @@ export class MoviesController {
 
 		return await this.moviesService.create({
 			...createMovieDto,
-			posterImage: posterImage[0].filename,
-			mainImage: mainImage[0].filename,
-			trailerVideo: trailerVideo[0].filename,
-			mainVideo: mainVideo[0].filename
+			posterImage: `http://localhost:4000/uploads/movies/${posterImage[0].filename}`,
+			mainImage: `http://localhost:4000/uploads/movies/${mainImage[0].filename}`,
+			trailerVideo: `http://localhost:4000/uploads/movies/${trailerVideo[0].filename}`,
+			mainVideo: `http://localhost:4000/uploads/movies/${mainVideo[0].filename}`
 		})
 	}
 	@Get(':id')
