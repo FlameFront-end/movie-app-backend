@@ -30,9 +30,6 @@ export class MovieEntity {
 	@Column()
 	mainVideo: string
 
-	@Column('simple-array')
-	names: string[]
-
 	@CreateDateColumn()
 	createdAt: Date
 
