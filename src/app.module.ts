@@ -7,6 +7,8 @@ import { UserEntity } from './user/entities/user.entity'
 import { UserModule } from './user/user.module'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { SocketService } from './socket/socket.service'
+import { UploadModule } from './upload/upload.module'
+import { UploadEntity } from './upload/entities/upload.entity'
 
 @Module({
 	imports: [
@@ -22,11 +24,12 @@ import { SocketService } from './socket/socket.service'
 				username: configService.get('DATABASE_USERNAME'),
 				password: configService.get('DATABASE_PASSWORD'),
 				database: configService.get('DATABASE_NAME'),
-				entities: [UserEntity, MovieEntity],
+				entities: [UserEntity, MovieEntity, UploadEntity],
 				synchronize: true
 			}),
 			inject: [ConfigService]
-		})
+		}),
+		UploadModule
 	],
 	controllers: [],
 	providers: [SocketService]

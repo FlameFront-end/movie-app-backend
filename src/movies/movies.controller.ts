@@ -12,9 +12,9 @@ import {
 import { MoviesService } from './movies.service'
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger'
 import { FileFieldsInterceptor } from '@nestjs/platform-express'
-import { movieStorage } from '../storage'
 import { CreateMovieDto } from './dto/create-movie.dto'
 import { UpdateMovieDto } from './dto/update-movie.dto'
+import { fileStorage } from '../storage'
 
 @Controller('movies')
 @ApiTags('movies')
@@ -36,7 +36,7 @@ export class MoviesController {
 				{ name: 'mainVideo', maxCount: 1 }
 			],
 			{
-				storage: movieStorage
+				storage: fileStorage
 			}
 		)
 	)
@@ -123,7 +123,7 @@ export class MoviesController {
 				{ name: 'mainVideo', maxCount: 1 }
 			],
 			{
-				storage: movieStorage
+				storage: fileStorage
 			}
 		)
 	)
