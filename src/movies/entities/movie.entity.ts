@@ -3,9 +3,12 @@ import {
 	CreateDateColumn,
 	DeleteDateColumn,
 	Entity,
+	JoinTable,
+	ManyToMany,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn
 } from 'typeorm'
+import { ActorEntity } from '../../actors/entities/actor.entity'
 
 @Entity('movies')
 export class MovieEntity {
@@ -17,6 +20,9 @@ export class MovieEntity {
 
 	@Column()
 	description: string
+
+	@Column({ type: 'text', array: true, nullable: true })
+	tags: string[]
 
 	@Column()
 	posterImage: string
@@ -38,4 +44,8 @@ export class MovieEntity {
 
 	@DeleteDateColumn()
 	deleteAt?: Date
+
+	@ManyToMany(() => ActorEntity, { eager: true })
+	@JoinTable()
+	actors: any[]
 }

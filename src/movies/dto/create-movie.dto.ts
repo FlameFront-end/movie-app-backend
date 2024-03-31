@@ -7,6 +7,12 @@ export class CreateMovieDto {
 	@ApiProperty()
 	readonly description: string
 
+	@ApiProperty({ type: [String] })
+	readonly tags: string[]
+
+	@ApiProperty({ type: [Number] })
+	readonly actors: number[]
+
 	@ApiProperty()
 	readonly posterImage: string
 
@@ -18,7 +24,4 @@ export class CreateMovieDto {
 
 	@ApiProperty()
 	readonly mainVideo: string
-
-	@ApiProperty({ type: [String] })
-	readonly actors: string[]
 }

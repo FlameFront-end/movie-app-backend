@@ -82,6 +82,12 @@ export class MoviesController {
 				actors: {
 					type: 'array',
 					items: {
+						type: 'number'
+					}
+				},
+				tags: {
+					type: 'array',
+					items: {
 						type: 'string'
 					}
 				}
@@ -167,6 +173,12 @@ export class MoviesController {
 					type: 'string'
 				},
 				actors: {
+					type: 'array',
+					items: {
+						type: 'string'
+					}
+				},
+				tags: {
 					type: 'array',
 					items: {
 						type: 'string'

@@ -1,25 +1,44 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+	HttpException,
+	HttpStatus,
+	Injectable,
+	NotFoundException
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { MovieEntity } from './entities/movie.entity'
 import { FindOneOptions, Repository } from 'typeorm'
 import { CreateMovieDto } from './dto/create-movie.dto'
 import { UpdateMovieDto } from './dto/update-movie.dto'
+import { ActorEntity } from '../actors/entities/actor.entity'
 
 @Injectable()
 export class MoviesService {
 	constructor(
 		@InjectRepository(MovieEntity)
-		private repository: Repository<MovieEntity>
+		private repository: Repository<MovieEntity>,
+		@InjectRepository(ActorEntity)
+		private actorRepository: Repository<ActorEntity>
 	) {}
 
 	async create(createMovieDto: CreateMovieDto) {
-		return this.repository.save({
-			...createMovieDto
-		})
+		const newMovie = this.repository.create(createMovieDto)
+
+		const actors = await this.actorRepository.findByIds(createMovieDto.actors)
+
+		if (actors.length !== createMovieDto.actors.length) {
+			throw new HttpException(
+				'One or more skills not found',
+				HttpStatus.BAD_REQUEST
+			)
+		}
+
+		newMovie.actors = actors
+
+		return this.repository.save(newMovie)
 	}
 
 	findAll() {
-		return this.repository.find()
+		return this.repository.find({ relations: ['actors'] })
 	}
 
 	async getMovieById(id: number): Promise<MovieEntity> | null {
