@@ -62,7 +62,10 @@ export class UserController {
 		ava: Express.Multer.File,
 		@Body() createUserDto: CreateUserDto
 	) {
-		return this.userService.create({ ...createUserDto, ava })
+		return this.userService.create({
+			...createUserDto,
+			ava: `http://localhost:4000/uploads/ava/${ava.filename}`
+		})
 	}
 
 	@Patch('reset-password')

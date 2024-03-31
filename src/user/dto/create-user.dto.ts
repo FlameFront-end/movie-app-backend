@@ -11,5 +11,5 @@ export class CreateUserDto {
 	readonly nick: string
 
 	@ApiProperty()
-	readonly ava: Express.Multer.File
+	readonly ava: string
 }

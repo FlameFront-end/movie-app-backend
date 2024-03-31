@@ -31,7 +31,7 @@ export class UserService {
 			email: createUserDto.email,
 			password: await argon2.hash(createUserDto.password),
 			nick: createUserDto.nick,
-			ava: createUserDto.ava.filename,
+			ava: createUserDto.ava,
 			isAdmin: createUserDto.email === '5017_30@mail.ru'
 		})
 
