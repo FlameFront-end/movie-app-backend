@@ -38,13 +38,15 @@ export class MoviesService {
 	}
 
 	findAll() {
-		return this.repository.find({ relations: ['actors', 'comments'] })
+		return this.repository.find({
+			relations: ['actors', 'comments', 'comments.user']
+		})
 	}
 
 	async getMovieById(id: number): Promise<MovieEntity> | null {
 		const movie = await this.repository.findOne({
 			where: { id },
-			relations: ['actors', 'comments']
+			relations: ['actors', 'comments', 'comments.user']
 		})
 
 		if (!movie) {
@@ -59,7 +61,7 @@ export class MoviesService {
 	): Promise<MovieEntity> {
 		const movie = await this.repository.findOne({
 			where: { id },
-			relations: ['actors', 'comments']
+			relations: ['actors', 'comments', 'comments.user']
 		})
 		if (!movie) {
 			throw new Error('Movie not found')

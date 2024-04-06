@@ -48,6 +48,7 @@ export class CommentsService {
 
 		return comment
 	}
+
 	async findAll() {
 		return await this.commentRepository.find({ relations: ['user'] })
 	}

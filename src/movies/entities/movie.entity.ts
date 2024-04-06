@@ -51,6 +51,6 @@ export class MovieEntity {
 	@JoinTable()
 	actors: any[]
 
-	@OneToMany(() => CommentEntity, comment => comment.movie)
+	@OneToMany(() => CommentEntity, comment => comment.movie, { eager: true })
 	comments: CommentEntity[]
 }
