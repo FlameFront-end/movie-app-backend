@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { CreateCommentDto } from './dto/create-comment.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { UserEntity } from '../user/entities/user.entity'
-import { Repository } from 'typeorm'
+import { OrderByCondition, Repository } from 'typeorm'
 import { CommentEntity } from './entities/comment.entity'
 import { MovieEntity } from '../movies/entities/movie.entity'
 

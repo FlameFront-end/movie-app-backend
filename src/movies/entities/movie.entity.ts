@@ -38,6 +38,9 @@ export class MovieEntity {
 	@Column()
 	mainVideo: string
 
+	@Column({ default: 0 })
+	viewCount: number
+
 	@CreateDateColumn()
 	createdAt: Date
 

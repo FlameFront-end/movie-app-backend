@@ -39,7 +39,8 @@ export class MoviesService {
 
 	findAll() {
 		return this.repository.find({
-			relations: ['actors', 'comments', 'comments.user']
+			relations: ['actors', 'comments', 'comments.user'],
+			order: { createdAt: 'DESC' }
 		})
 	}
 
@@ -52,6 +53,10 @@ export class MoviesService {
 		if (!movie) {
 			throw new NotFoundException('Фильм не был найден')
 		}
+
+		movie.viewCount = movie.viewCount + 1
+		await this.repository.save(movie)
+
 		return movie
 	}
 
