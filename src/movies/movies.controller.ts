@@ -26,6 +26,11 @@ export class MoviesController {
 		return this.moviesService.findAll()
 	}
 
+	@Get('/popular')
+	findAllPopular() {
+		return this.moviesService.findAllPopular()
+	}
+
 	@Post()
 	@UseInterceptors(
 		FileFieldsInterceptor(

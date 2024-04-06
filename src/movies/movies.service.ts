@@ -44,6 +44,12 @@ export class MoviesService {
 		})
 	}
 
+	async findAllPopular() {
+		return await this.repository.find({
+			order: { viewCount: 'DESC' }
+		})
+	}
+
 	async getMovieById(id: number): Promise<MovieEntity> | null {
 		const movie = await this.repository.findOne({
 			where: { id },
