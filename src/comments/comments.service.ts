@@ -49,7 +49,10 @@ export class CommentsService {
 		return comment
 	}
 
-	async findAll() {
-		return await this.commentRepository.find({ relations: ['user'] })
+	async findAll(movieId: number) {
+		return await this.commentRepository.find({
+			where: { movie: { id: movieId } },
+			relations: ['user']
+		})
 	}
 }
