@@ -38,15 +38,15 @@ export class MoviesService {
 	}
 
 	findAll() {
-		return this.repository.find({ relations: ['actors'] })
+		return this.repository.find({ relations: ['actors', 'comments'] })
 	}
 
 	async getMovieById(id: number): Promise<MovieEntity> | null {
-		const options: FindOneOptions<MovieEntity> = {
-			where: { id }
-		}
+		const movie = await this.repository.findOne({
+			where: { id },
+			relations: ['actors', 'comments']
+		})
 
-		const movie = await this.repository.findOne(options)
 		if (!movie) {
 			throw new NotFoundException('Фильм не был найден')
 		}
@@ -57,7 +57,10 @@ export class MoviesService {
 		id: number,
 		updateMovieDto: UpdateMovieDto
 	): Promise<MovieEntity> {
-		const movie = await this.repository.findOne({ where: { id } })
+		const movie = await this.repository.findOne({
+			where: { id },
+			relations: ['actors', 'comments']
+		})
 		if (!movie) {
 			throw new Error('Movie not found')
 		}

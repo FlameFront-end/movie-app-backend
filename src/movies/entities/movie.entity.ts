@@ -5,10 +5,12 @@ import {
 	Entity,
 	JoinTable,
 	ManyToMany,
+	OneToMany,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn
 } from 'typeorm'
 import { ActorEntity } from '../../actors/entities/actor.entity'
+import { CommentEntity } from '../../comments/entities/comment.entity'
 
 @Entity('movies')
 export class MovieEntity {
@@ -48,4 +50,7 @@ export class MovieEntity {
 	@ManyToMany(() => ActorEntity, { eager: true })
 	@JoinTable()
 	actors: any[]
+
+	@OneToMany(() => CommentEntity, comment => comment.movie)
+	comments: CommentEntity[]
 }

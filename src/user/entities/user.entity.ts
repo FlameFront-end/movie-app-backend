@@ -5,9 +5,12 @@ import {
 	CreateDateColumn,
 	UpdateDateColumn,
 	JoinTable,
-	ManyToMany
+	ManyToMany,
+	ManyToOne,
+	OneToMany
 } from 'typeorm'
 import { MovieEntity } from '../../movies/entities/movie.entity'
+import { CommentEntity } from '../../comments/entities/comment.entity'
 
 @Entity('user')
 export class UserEntity {
@@ -32,6 +35,9 @@ export class UserEntity {
 	@ManyToMany(() => MovieEntity)
 	@JoinTable()
 	favorites: MovieEntity[]
+
+	@OneToMany(() => CommentEntity, comment => comment.user)
+	comments: CommentEntity[]
 
 	@CreateDateColumn()
 	createdAt: Date

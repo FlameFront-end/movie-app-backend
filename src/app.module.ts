@@ -9,6 +9,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { SocketService } from './socket/socket.service'
 import { ActorsModule } from './actors/actors.module'
 import { ActorEntity } from './actors/entities/actor.entity'
+import { CommentsModule } from './comments/comments.module'
+import { CommentEntity } from './comments/entities/comment.entity'
 
 @Module({
 	imports: [
@@ -24,12 +26,13 @@ import { ActorEntity } from './actors/entities/actor.entity'
 				username: configService.get('DATABASE_USERNAME'),
 				password: configService.get('DATABASE_PASSWORD'),
 				database: configService.get('DATABASE_NAME'),
-				entities: [UserEntity, MovieEntity, ActorEntity],
+				entities: [UserEntity, MovieEntity, ActorEntity, CommentEntity],
 				synchronize: true
 			}),
 			inject: [ConfigService]
 		}),
-		ActorsModule
+		ActorsModule,
+		CommentsModule
 	],
 	controllers: [],
 	providers: [SocketService]
