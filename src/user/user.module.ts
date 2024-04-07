@@ -7,11 +7,12 @@ import { JwtModule } from '@nestjs/jwt'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { MoviesModule } from '../movies/movies.module'
 import { CommentEntity } from '../comments/entities/comment.entity'
+import { MovieEntity } from '../movies/entities/movie.entity'
 
 @Module({
 	imports: [
 		MoviesModule,
-		TypeOrmModule.forFeature([UserEntity, CommentEntity]),
+		TypeOrmModule.forFeature([UserEntity, CommentEntity, MovieEntity]),
 		JwtModule.registerAsync({
 			imports: [ConfigModule],
 			useFactory: (configService: ConfigService) => ({

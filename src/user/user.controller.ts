@@ -88,9 +88,9 @@ export class UserController {
 	@UseGuards(JwtAuthGuard)
 	async addToFavorites(
 		@Request() req,
-		@Body() movie: MovieEntity
+		@Param('movieId') movieId: number
 	): Promise<void> {
-		await this.userService.addToFavorites(req.user.id, movie)
+		await this.userService.addToFavorites(req.user.id, movieId)
 	}
 
 	@Delete('favorites/:movieId')
