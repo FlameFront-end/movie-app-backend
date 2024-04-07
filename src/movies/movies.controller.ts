@@ -7,10 +7,11 @@ import {
 	Param,
 	Put,
 	Delete,
-	UploadedFiles
+	UploadedFiles,
+	Query
 } from '@nestjs/common'
 import { MoviesService } from './movies.service'
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger'
+import { ApiBody, ApiConsumes, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { FileFieldsInterceptor } from '@nestjs/platform-express'
 import { movieStorage } from '../storage'
 import { CreateMovieDto } from './dto/create-movie.dto'
@@ -29,6 +30,12 @@ export class MoviesController {
 	@Get('/popular')
 	findAllPopular() {
 		return this.moviesService.findAllPopular()
+	}
+
+	@Get('/search')
+	@ApiQuery({ name: 'title', required: true })
+	async searchByTitle(@Query('title') title: string) {
+		return await this.moviesService.searchByTitle(title)
 	}
 
 	@Post()

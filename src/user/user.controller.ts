@@ -89,8 +89,8 @@ export class UserController {
 	async addToFavorites(
 		@Request() req,
 		@Param('movieId') movieId: number
-	): Promise<void> {
-		await this.userService.addToFavorites(req.user.id, movieId)
+	): Promise<MovieEntity> {
+		return this.userService.addToFavorites(req.user.id, movieId)
 	}
 
 	@Delete('favorites/:movieId')
@@ -98,8 +98,8 @@ export class UserController {
 	async removeFromFavorites(
 		@Request() req,
 		@Param('movieId') movieId: number
-	): Promise<void> {
-		await this.userService.removeFromFavorites(req.user.id, movieId)
+	): Promise<MovieEntity> {
+		return this.userService.removeFromFavorites(req.user.id, movieId)
 	}
 
 	@Get(':id')

@@ -76,7 +76,7 @@ export class UserService {
 		await this.updatePassword(user.id, hashedNewPassword)
 	}
 
-	async addToFavorites(userId: number, movieId: number): Promise<void> {
+	async addToFavorites(userId: number, movieId: number): Promise<MovieEntity> {
 		const user = await this.userRepository.findOne({ where: { id: userId } })
 		const movie = await this.movieRepository.findOne({ where: { id: movieId } })
 
@@ -84,23 +84,36 @@ export class UserService {
 			throw new BadRequestException('User or movie not found')
 		}
 
-		return this.userRepository
+		await this.userRepository
 			.createQueryBuilder()
 			.relation(UserEntity, 'favorites')
 			.of(user)
 			.add(movie)
+
+		console.log('movie', movie)
+
+		return movie
 	}
 
-	async removeFromFavorites(userId: number, movieId: number): Promise<void> {
+	async removeFromFavorites(
+		userId: number,
+		movieId: number
+	): Promise<MovieEntity> {
 		const user = await this.userRepository.findOne({ where: { id: userId } })
-		if (!user) {
-			throw new BadRequestException('User not found')
+		const movie = await this.movieRepository.findOne({ where: { id: movieId } })
+
+		if (!user || !movie) {
+			throw new BadRequestException('User or movie not found')
 		}
 
-		return await this.userRepository
+		await this.userRepository
 			.createQueryBuilder()
 			.relation(UserEntity, 'favorites')
 			.of(user)
 			.remove(movieId)
+
+		console.log('movie', movie)
+
+		return movie
 	}
 }

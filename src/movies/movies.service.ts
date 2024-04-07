@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { MovieEntity } from './entities/movie.entity'
-import { FindOneOptions, Repository } from 'typeorm'
+import { ILike, Repository } from 'typeorm'
 import { CreateMovieDto } from './dto/create-movie.dto'
 import { UpdateMovieDto } from './dto/update-movie.dto'
 import { ActorEntity } from '../actors/entities/actor.entity'
@@ -64,6 +64,10 @@ export class MoviesService {
 		await this.repository.save(movie)
 
 		return movie
+	}
+
+	async searchByTitle(title: string): Promise<MovieEntity[]> {
+		return await this.repository.find({ where: { title: ILike(`%${title}%`) } })
 	}
 
 	async updateMovie(
