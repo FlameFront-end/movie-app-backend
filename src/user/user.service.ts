@@ -97,7 +97,7 @@ export class UserService {
 			throw new BadRequestException('User not found')
 		}
 
-		await this.userRepository
+		return await this.userRepository
 			.createQueryBuilder()
 			.relation(UserEntity, 'favorites')
 			.of(user)
