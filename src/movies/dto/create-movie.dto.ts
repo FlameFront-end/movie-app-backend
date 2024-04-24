@@ -24,4 +24,7 @@ export class CreateMovieDto {
 
 	@ApiProperty()
 	readonly mainVideo: string
+
+	@ApiProperty()
+	readonly onlySubscribe: string
 }

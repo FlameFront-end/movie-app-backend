@@ -21,16 +21,15 @@ export class MoviesService {
 	) {}
 
 	async create(createMovieDto: CreateMovieDto) {
-		const newMovie = this.repository.create(createMovieDto)
+		console.log('createMovieDto.onlySubscribe', createMovieDto.onlySubscribe)
+		console.log('createMovieDto', createMovieDto)
+
+		const newMovie = this.repository.create({
+			...createMovieDto,
+			onlySubscribe: createMovieDto.onlySubscribe === 'true'
+		})
 
 		const actors = await this.actorRepository.findByIds(createMovieDto.actors)
-
-		if (actors.length !== createMovieDto.actors.length) {
-			throw new HttpException(
-				'One or more skills not found',
-				HttpStatus.BAD_REQUEST
-			)
-		}
 
 		newMovie.actors = actors
 

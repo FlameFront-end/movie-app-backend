@@ -41,6 +41,9 @@ export class MovieEntity {
 	@Column({ default: 0 })
 	viewCount: number
 
+	@Column({ nullable: true })
+	onlySubscribe: boolean
+
 	@CreateDateColumn()
 	createdAt: Date
 
