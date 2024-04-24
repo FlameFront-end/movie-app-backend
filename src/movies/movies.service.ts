@@ -83,6 +83,8 @@ export class MoviesService {
 		}
 		Object.assign(movie, updateMovieDto)
 
+		movie.actors = updateMovieDto.actors
+
 		return await this.repository.save(movie)
 	}
 

@@ -116,4 +116,17 @@ export class UserService {
 
 		return movie
 	}
+
+	async byuSubscribe(userId: number): Promise<UserEntity> {
+		const user = await this.userRepository.findOne({ where: { id: userId } })
+
+		if (!user) {
+			throw new BadRequestException('User not found')
+		}
+
+		return await this.userRepository.save({
+			...user,
+			subscribe: true
+		})
+	}
 }

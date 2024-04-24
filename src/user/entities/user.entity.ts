@@ -32,6 +32,9 @@ export class UserEntity {
 	@Column({ default: false })
 	isAdmin: boolean
 
+	@Column({ default: false })
+	subscribe: boolean
+
 	@ManyToMany(() => MovieEntity)
 	@JoinTable()
 	favorites: MovieEntity[]

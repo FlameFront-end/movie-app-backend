@@ -212,12 +212,26 @@ export class MoviesController {
 	) {
 		const { posterImage, mainImage, trailerVideo, mainVideo } = files
 
+		console.log('updateMovieDto', updateMovieDto)
+
 		return await this.moviesService.updateMovie(id, {
 			...updateMovieDto,
-			posterImage: posterImage[0].filename,
-			mainImage: mainImage[0].filename,
-			trailerVideo: trailerVideo[0].filename,
-			mainVideo: mainVideo[0].filename
+			posterImage:
+				typeof updateMovieDto.posterImage === 'string'
+					? updateMovieDto.posterImage
+					: `http://localhost:4000/uploads/movies/${posterImage[0].filename}`,
+			mainImage:
+				typeof updateMovieDto.mainImage === 'string'
+					? updateMovieDto.mainImage
+					: `http://localhost:4000/uploads/movies/${mainImage[0].filename}`,
+			trailerVideo:
+				typeof updateMovieDto.trailerVideo === 'string'
+					? updateMovieDto.trailerVideo
+					: `http://localhost:4000/uploads/movies/${trailerVideo[0].filename}`,
+			mainVideo:
+				typeof updateMovieDto.mainImage === 'string'
+					? updateMovieDto.mainVideo
+					: `http://localhost:4000/uploads/movies/${mainVideo[0].filename}`
 		})
 	}
 

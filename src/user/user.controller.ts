@@ -68,6 +68,12 @@ export class UserController {
 		})
 	}
 
+	@Post('/buy')
+	@UseGuards(JwtAuthGuard)
+	byuSubscribe(@Request() req) {
+		return this.userService.byuSubscribe(req.user.id)
+	}
+
 	@Patch('reset-password')
 	@UseGuards(JwtAuthGuard)
 	async resetPassword(@Request() req, @Body() body: ResetPasswordDto) {
