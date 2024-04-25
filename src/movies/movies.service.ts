@@ -1,15 +1,12 @@
-import {
-	HttpException,
-	HttpStatus,
-	Injectable,
-	NotFoundException
-} from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { MovieEntity } from './entities/movie.entity'
 import { ILike, Repository } from 'typeorm'
 import { CreateMovieDto } from './dto/create-movie.dto'
 import { UpdateMovieDto } from './dto/update-movie.dto'
 import { ActorEntity } from '../actors/entities/actor.entity'
+import { UserEntity } from '../user/entities/user.entity'
+import { CommentEntity } from '../comments/entities/comment.entity'
 
 @Injectable()
 export class MoviesService {
@@ -17,13 +14,14 @@ export class MoviesService {
 		@InjectRepository(MovieEntity)
 		private repository: Repository<MovieEntity>,
 		@InjectRepository(ActorEntity)
-		private actorRepository: Repository<ActorEntity>
+		private actorRepository: Repository<ActorEntity>,
+		@InjectRepository(UserEntity)
+		private userRepository: Repository<UserEntity>,
+		@InjectRepository(CommentEntity)
+		private commentRepository: Repository<CommentEntity>
 	) {}
 
 	async create(createMovieDto: CreateMovieDto) {
-		console.log('createMovieDto.onlySubscribe', createMovieDto.onlySubscribe)
-		console.log('createMovieDto', createMovieDto)
-
 		const newMovie = this.repository.create({
 			...createMovieDto,
 			onlySubscribe: createMovieDto.onlySubscribe === 'true'
@@ -88,13 +86,30 @@ export class MoviesService {
 	}
 
 	async deleteMovie(id: number): Promise<MovieEntity> {
-		const movie = await this.repository.findOne({ where: { id } })
+		const movie = await this.repository.findOne({
+			where: { id },
+			relations: ['comments']
+		})
 
 		if (!movie) {
-			throw new Error('Movie not found')
+			throw new NotFoundException('Фильм не был найден')
 		}
 
-		await this.repository.delete(id)
+		// Удаляем фильм из избранных у всех пользователей
+		const users = await this.userRepository.find({ relations: ['favorites'] })
+		users.forEach(async user => {
+			user.favorites = user.favorites.filter(favorite => favorite.id !== id)
+			await this.userRepository.save(user)
+		})
+
+		// Удаляем комментарии к фильму
+		await Promise.all(
+			movie.comments.map(async comment => {
+				await this.commentRepository.delete(comment.id)
+			})
+		)
+
+		await this.repository.remove(movie)
 
 		return movie
 	}
