@@ -8,10 +8,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { MoviesModule } from '../movies/movies.module'
 import { CommentEntity } from '../comments/entities/comment.entity'
 import { MovieEntity } from '../movies/entities/movie.entity'
+import { TelegramService } from '../telegram/telegram.service'
+import { TelegramModule } from '../telegram/telegram.module'
 
 @Module({
 	imports: [
 		MoviesModule,
+		TelegramModule,
 		TypeOrmModule.forFeature([UserEntity, CommentEntity, MovieEntity]),
 		JwtModule.registerAsync({
 			imports: [ConfigModule],

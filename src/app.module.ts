@@ -11,12 +11,17 @@ import { ActorsModule } from './actors/actors.module'
 import { ActorEntity } from './actors/entities/actor.entity'
 import { CommentsModule } from './comments/comments.module'
 import { CommentEntity } from './comments/entities/comment.entity'
+import { TelegramModule } from './telegram/telegram.module'
+import { FileModule } from './file/file.module';
 
 @Module({
 	imports: [
 		UserModule,
 		AuthModule,
 		MoviesModule,
+		ActorsModule,
+		CommentsModule,
+		TelegramModule,
 		ConfigModule.forRoot({ isGlobal: true }),
 		TypeOrmModule.forRootAsync({
 			imports: [ConfigModule],
@@ -31,8 +36,7 @@ import { CommentEntity } from './comments/entities/comment.entity'
 			}),
 			inject: [ConfigService]
 		}),
-		ActorsModule,
-		CommentsModule
+		FileModule
 	],
 	controllers: [],
 	providers: [SocketService]

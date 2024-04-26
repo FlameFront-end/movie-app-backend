@@ -16,6 +16,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express'
 import { movieStorage } from '../storage'
 import { CreateMovieDto } from './dto/create-movie.dto'
 import { UpdateMovieDto } from './dto/update-movie.dto'
+import { TelegramService } from '../telegram/telegram.service'
 
 @Controller('movies')
 @ApiTags('movies')

@@ -23,11 +23,15 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import * as argon2 from 'argon2'
 import { ResetPasswordDto } from './dto/reset-password.dto'
 import { MovieEntity } from '../movies/entities/movie.entity'
+import { TelegramService } from '../telegram/telegram.service'
 
 @Controller('user')
 @ApiTags('user')
 export class UserController {
-	constructor(private readonly userService: UserService) {}
+	constructor(
+		private readonly userService: UserService,
+		private readonly telegramService: TelegramService
+	) {}
 
 	@Post()
 	@UseInterceptors(
@@ -62,16 +66,28 @@ export class UserController {
 		ava: Express.Multer.File,
 		@Body() createUserDto: CreateUserDto
 	) {
-		return this.userService.create({
+		const user = this.userService.create({
 			...createUserDto,
 			ava: `http://localhost:4000/uploads/ava/${ava.filename}`
 		})
+
+		this.telegramService.sendMessage(
+			`Пользователь ${createUserDto.nick} зарегестрировался.`
+		)
+
+		return user
 	}
 
 	@Post('/buy')
 	@UseGuards(JwtAuthGuard)
 	byuSubscribe(@Request() req) {
-		return this.userService.byuSubscribe(req.user.id)
+		const user = this.userService.byuSubscribe(req.user.id)
+
+		this.telegramService.sendMessage(
+			`Пользователь c почтой ${req.user.email} купил MovieHub Premium`
+		)
+
+		return user
 	}
 
 	@Patch('reset-password')
